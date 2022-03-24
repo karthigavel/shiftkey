@@ -1,0 +1,24 @@
+.heroContainer { display: grid; grid-template-columns: 100%; grid-template-rows: 1fr; width: 100%; place-items: center; }
+
+.nextImage { grid-column: 1; grid-row: 1; }
+
+.heroContent { grid-column: 1; grid-row: 1; z-index: 1; position: relative; margin-top: -500px; margin-left: 40%; color: blueviolet; font-weight: 900;}
+  @keyframes animated-text {
+    from {
+      width: 0;
+    }
+    to {
+      width: 73%;
+    }
+  }
+  
+  @keyframes animated-cursor {
+    from {
+      border-right-color: rgba(0, 255, 0, 0.75);
+    }
+    to {
+      border-right-color: transparent;
+    }
+  }
+
+ 
