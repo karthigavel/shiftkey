@@ -4,23 +4,19 @@ import {
   useTheme,
   Grid,
   Box,
-  Typography,
-  useMediaQuery,
   Stack,
-  styled,
-  IconButton,
   Button,
   Toolbar,
-  List,
   MenuItem,
   Divider,
-  Avatar,
+  Link,
+  AppBar,
 } from "@mui/material";
 
-import Link from "next/link";
 import Image from "next/image";
 import shiftkey from "./logos/shiftkey.png";
-// const Links = ["Dashboard", "Projects", "Team"];
+import AccountMenu from "../../custom-components/account-menu";
+
 const Links = [
   {
     name: "START",
@@ -44,29 +40,24 @@ const NavLink = ({ children, path }: { children: ReactNode; path: string }) => {
   const theme = useTheme();
 
   return (
-    <Box
-      px={2}
-      py={1}
+    <Button
+      component={Link}
+      href={path}
       sx={{
+        px: 2,
+        py: 1,
+        color: theme.palette.grey[900],
         "&:hover": {
           backgroundColor: theme.palette.grey[400],
         },
       }}
     >
-      <Link href={path}>{children}</Link>
-    </Box>
+      {children}
+    </Button>
   );
 };
 
-// interface INavbarProps {
-//   isOpen: boolean;
-//   onOpen: () => void;
-//   onClose: () => void;
-// }
-
 export default function Navbar() {
-  // const { isOpen, onOpen, onClose } = props;
-
   const theme = useTheme();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -76,30 +67,25 @@ export default function Navbar() {
     return () => {};
   }, [isOpen]);
   return (
-    <Box
+    <AppBar
       sx={{
         backgroundColor: theme.palette.grey[200],
         width: "100vw",
-        height: "fit-content",
+        height: "75px",
+        px: 4,
       }}
-      px={4}
     >
-      <Grid
-        container
-        sx={{ height: 16 }}
-        alignItems={"center"}
-        justifyContent={"space-between"}
-      >
-        <IconButton
+      <Grid container justifyContent={"space-between"}>
+        {/* <IconButton
           size="medium"
           // icon={isOpen ? "close" : "open"}
           aria-label={"Open Menu"}
           sx={{ md: "none" }}
-          onClick={() => setIsOpen(!isOpen)}
+          // onClick={() => setIsOpen(!isOpen)}
         >
           menu
-        </IconButton>
-        <Stack spacing={3} alignItems={"center"} direction="row">
+        </IconButton> */}
+        <Stack alignItems={"center"} direction="row">
           <Box>
             <Image
               src={shiftkey}
@@ -108,45 +94,35 @@ export default function Navbar() {
               height="70px"
             />
           </Box>
-          <Stack
-            component={"nav"}
-            spacing={4}
-            direction="row"
-            display={{ base: "none", md: "flex" }}
-          >
+          <Toolbar sx={{ pr: 0 }}>
             {Links.map(({ name, path }) => (
               <NavLink key={path} path={path}>
                 {name}
               </NavLink>
             ))}
-          </Stack>
+          </Toolbar>
         </Stack>
-        <Grid alignItems={"center"}>
+        <Grid
+          container
+          direction="row"
+          alignItems={"center"}
+          sx={{ width: "fit-content" }}
+        >
           <Button
             variant="contained"
-            color="primary"
-            size="small"
-            sx={{ mr: 4 }}
-            // leftIcon={<AddIcon />}
+            color="secondary"
+            // size="small"
+            sx={{ mr: 2 }}
+            startIcon={"+"}
           >
             Action
           </Button>
-          <Toolbar>
-            <Button>
-              <Avatar
-                sx={{ width: 34, height: 34 }}
-                src={
-                  "https://www.istockphoto.com/foto/developers-at-work-gm636609180-113033579"
-                }
-              />
-            </Button>
-            <List>
-              <MenuItem>Link 1</MenuItem>
-              <MenuItem>Link 2</MenuItem>
-              <Divider />
-              <MenuItem>Link 3</MenuItem>
-            </List>
-          </Toolbar>
+          <AccountMenu tooltip="this is a menu">
+            <MenuItem>Link 1</MenuItem>
+            <MenuItem>Link 2</MenuItem>
+            <Divider />
+            <MenuItem>Link 3</MenuItem>
+          </AccountMenu>
         </Grid>
       </Grid>
 
@@ -161,6 +137,6 @@ export default function Navbar() {
           </Stack>
         </Box>
       ) : null}
-    </Box>
+    </AppBar>
   );
 }
