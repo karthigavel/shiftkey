@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import Footer from "./footer";
 import Navbar from "./navbar/navbar";
 
 interface ILayoutProps {
@@ -10,7 +11,7 @@ const Layout = ({ children }: ILayoutProps) => {
     <>
       <Navbar />
       {children}
-      {/* <Footer/> */}
+      <Footer />
     </>
   );
 };
