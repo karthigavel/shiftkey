@@ -1,25 +1,25 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
+
 import {
+  useTheme,
+  Grid,
   Box,
-  Flex,
-  Avatar,
-  HStack,
+  Typography,
+  useMediaQuery,
+  Stack,
+  styled,
   IconButton,
   Button,
-  Menu,
-  MenuButton,
-  MenuList,
+  Toolbar,
+  List,
   MenuItem,
-  MenuDivider,
-  useDisclosure,
-  useColorModeValue,
-  Stack,
-} from "@chakra-ui/react";
+  Divider,
+  Avatar,
+} from "@mui/material";
 
-import { HamburgerIcon, CloseIcon, AddIcon } from "@chakra-ui/icons";
 import Link from "next/link";
-import Image from 'next/image';
-import shiftkey from './logos/shiftkey.png';
+import Image from "next/image";
+import shiftkey from "./logos/shiftkey.png";
 // const Links = ["Dashboard", "Projects", "Team"];
 const Links = [
   {
@@ -40,102 +40,127 @@ const Links = [
   },
 ];
 
-const NavLink = ({ children, path }: { children: ReactNode; path: string }) => (
-  <Box
-    px={2}
-    py={1}
-    rounded={"md"}
-    _hover={{
-      textDecoration: "none",
-      bg: useColorModeValue("gray.200", "gray.700"),
-    }}
-  >
-    <Link href={path}>{children}</Link>
-  </Box>
-);
-
-export default function Navbar() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const NavLink = ({ children, path }: { children: ReactNode; path: string }) => {
+  const theme = useTheme();
 
   return (
-    <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
-        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <IconButton
-            size={"md"}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={"Open Menu"}
-            display={{ md: "none" }}
-            onClick={isOpen ? onClose : onOpen}
-          />
-          <HStack spacing={3} alignItems={"center"}>
-            <Box><Image
-      src={shiftkey}
-      alt="Picture of the author"
-      width="90px"
-      height="70px"
-      
-    /></Box>
-            <HStack
-              as={"nav"}
-              spacing={4}
-              display={{ base: "none", md: "flex" }}
-            >
-              {Links.map(({ name, path }) => (
-                <NavLink key={path} path={path}>
-                  {name}
-                </NavLink>
-              ))}
-            </HStack>
-          </HStack>
-          <Flex alignItems={"center"}>
-            <Button
-              variant={"solid"}
-              colorScheme={"teal"}
-              size={"sm"}
-              mr={4}
-              leftIcon={<AddIcon />}
-            >
-              Action
-            </Button>
-            <Menu>
-              <MenuButton
-                as={Button}
-                rounded={"full"}
-                variant={"link"}
-                cursor={"pointer"}
-              >
-                <Avatar
-                  size={"sm"}
-                  src={
-                    "https://www.istockphoto.com/foto/developers-at-work-gm636609180-113033579"
-                  }
-                />
-              </MenuButton>
-              <MenuList>
-                <MenuItem>Link 1</MenuItem>
-                <MenuItem>Link 2</MenuItem>
-                <MenuDivider />
-                <MenuItem>Link 3</MenuItem>
-              </MenuList>
-            </Menu>
-          </Flex>
-        </Flex>
+    <Box
+      px={2}
+      py={1}
+      sx={{
+        "&:hover": {
+          backgroundColor: theme.palette.grey[400],
+        },
+      }}
+    >
+      <Link href={path}>{children}</Link>
+    </Box>
+  );
+};
 
-        {isOpen ? (
-          <Box pb={4} display={{ md: "none" }}>
-            <Stack as={"nav"} spacing={4}>
-              {Links.map(({ name, path }) => (
-                <NavLink key={path} path={path}>
-                  {name}
-                </NavLink>
-              ))}
-            </Stack>
+// interface INavbarProps {
+//   isOpen: boolean;
+//   onOpen: () => void;
+//   onClose: () => void;
+// }
+
+export default function Navbar() {
+  // const { isOpen, onOpen, onClose } = props;
+
+  const theme = useTheme();
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    console.log(isOpen);
+    return () => {};
+  }, [isOpen]);
+  return (
+    <Box
+      sx={{
+        backgroundColor: theme.palette.grey[200],
+        width: "100vw",
+        height: "fit-content",
+      }}
+      px={4}
+    >
+      <Grid
+        container
+        sx={{ height: 16 }}
+        alignItems={"center"}
+        justifyContent={"space-between"}
+      >
+        <IconButton
+          size="medium"
+          // icon={isOpen ? "close" : "open"}
+          aria-label={"Open Menu"}
+          sx={{ md: "none" }}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          menu
+        </IconButton>
+        <Stack spacing={3} alignItems={"center"} direction="row">
+          <Box>
+            <Image
+              src={shiftkey}
+              alt="Picture of the author"
+              width="90px"
+              height="70px"
+            />
           </Box>
-        ) : null}
-      </Box>
+          <Stack
+            component={"nav"}
+            spacing={4}
+            direction="row"
+            display={{ base: "none", md: "flex" }}
+          >
+            {Links.map(({ name, path }) => (
+              <NavLink key={path} path={path}>
+                {name}
+              </NavLink>
+            ))}
+          </Stack>
+        </Stack>
+        <Grid alignItems={"center"}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            sx={{ mr: 4 }}
+            // leftIcon={<AddIcon />}
+          >
+            Action
+          </Button>
+          <Toolbar>
+            <Button>
+              <Avatar
+                sx={{ width: 34, height: 34 }}
+                src={
+                  "https://www.istockphoto.com/foto/developers-at-work-gm636609180-113033579"
+                }
+              />
+            </Button>
+            <List>
+              <MenuItem>Link 1</MenuItem>
+              <MenuItem>Link 2</MenuItem>
+              <Divider />
+              <MenuItem>Link 3</MenuItem>
+            </List>
+          </Toolbar>
+        </Grid>
+      </Grid>
 
-      {/* <Box p={4}>Main Content Here</Box> */}
-    </>
+      {isOpen ? (
+        <Box pb={4} display={{ md: "none" }}>
+          <Stack component={"nav"} spacing={4}>
+            {Links.map(({ name, path }) => (
+              <NavLink key={path} path={path}>
+                {name}
+              </NavLink>
+            ))}
+          </Stack>
+        </Box>
+      ) : null}
+    </Box>
   );
 }
