@@ -5,7 +5,8 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: [
-      'shiftkey.se'
+      'shiftkey.se',
+      'images.unsplash.com'
     ],
   }
 }
