@@ -30,7 +30,7 @@ export let shiftkeyTheme = responsiveFontSizes(
         default: "#F0F0F0",
       },
       text: {
-        primary: "#777777",
+        primary: "#071e26",
       },
     },
     typography: {
