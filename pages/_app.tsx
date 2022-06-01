@@ -37,8 +37,8 @@ export let shiftkeyTheme = responsiveFontSizes(
       fontFamily: ["Catamaran", "sans-serif"].join(","),
       fontSize: 15,
       h1: {
-        fontSize: "2.2rem",
-        fontWeight: 800,
+        fontSize: "3.6rem",
+        fontWeight: 700,
       },
       h2: {
         fontSize: "1.5rem",
