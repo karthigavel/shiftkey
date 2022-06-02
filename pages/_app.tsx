@@ -3,6 +3,7 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import React from "react";
 import Layout from "../components/layout/Layout";
+import { loadIcons } from "../config/icon-loader";
 
 import { CssBaseline } from "@mui/material";
 import {
@@ -10,6 +11,8 @@ import {
   ThemeProvider,
   responsiveFontSizes,
 } from "@mui/material/styles";
+
+loadIcons();
 
 export let shiftkeyTheme = responsiveFontSizes(
   createTheme({
