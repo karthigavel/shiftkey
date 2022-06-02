@@ -84,8 +84,8 @@ export default function Navbar() {
       variant="contained"
       color="secondary"
       // size="small"
-      sx={{ mr: 2 }}
-      startIcon={"+"}
+      sx={{ mr: matchesSmallerScreen ? 2 : 0, m: matchesSmallerScreen ? 2 : 0 }}
+      startIcon={<FontAwesomeIcon icon="plus" style={{ fontSize: "0.9rem" }} />}
     >
       Action
     </Button>

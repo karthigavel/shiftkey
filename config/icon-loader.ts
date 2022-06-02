@@ -7,6 +7,7 @@ import {
   faCircle,
   faHouse,
   faPaperPlane,
+  faPlus,
   faUsers,
   faUserPlus,
   faX
@@ -20,6 +21,7 @@ export const loadIcons = () => {
     faCircle,
     faHouse,
     faPaperPlane,
+    faPlus,
     faUsers,
     faUserPlus,
     faX
