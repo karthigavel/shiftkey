@@ -1,4 +1,6 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
+import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   useTheme,
@@ -11,9 +13,15 @@ import {
   Divider,
   Link,
   AppBar,
+  useMediaQuery,
+  Drawer,
+  ListItemButton,
+  ListItemText,
+  List,
+  ListItem,
+  ListItemIcon,
 } from "@mui/material";
 
-import Image from "next/image";
 import shiftkey from "./logos/shiftkey.png";
 import AccountMenu from "../../custom-components/account-menu";
 
@@ -21,18 +29,22 @@ const Links = [
   {
     name: "START",
     path: "/",
+    icon: "house",
   },
   {
     name: "THE TEAM",
     path: "/team/",
+    icon: "users",
   },
   {
     name: "WORK WITH US",
     path: "/workwithus/",
+    icon: "user-plus",
   },
   {
     name: "CONTACT US",
     path: "/contact-us/",
+    icon: "paper-plane",
   },
 ];
 
@@ -59,48 +71,71 @@ const NavLink = ({ children, path }: { children: ReactNode; path: string }) => {
 
 export default function Navbar() {
   const theme = useTheme();
+  const matchesSmallerScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
-    console.log(isOpen);
-    return () => {};
-  }, [isOpen]);
+  const handleToggleMenuOpen = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const actionButton = (
+    <Button
+      variant="contained"
+      color="secondary"
+      // size="small"
+      sx={{ mr: 2 }}
+      startIcon={"+"}
+    >
+      Action
+    </Button>
+  );
   return (
     <AppBar
       sx={{
         backgroundColor: theme.palette.grey[200],
         width: "100vw",
-        height: "75px",
-        px: 4,
+        height: { xs: "65px", sm: "75px" },
+        px: { xs: 2, sm: 4 },
+        zIndex: theme.zIndex.drawer + 1,
       }}
+      elevation={menuOpen ? 0 : 3}
     >
-      <Grid container justifyContent={"space-between"}>
-        {/* <IconButton
-          size="medium"
-          // icon={isOpen ? "close" : "open"}
-          aria-label={"Open Menu"}
-          sx={{ md: "none" }}
-          // onClick={() => setIsOpen(!isOpen)}
-        >
-          menu
-        </IconButton> */}
+      <Grid container justifyContent={"space-between"} alignItems="center">
+        {matchesSmallerScreen && (
+          <Button
+            onClick={handleToggleMenuOpen}
+            startIcon={
+              <FontAwesomeIcon
+                icon={menuOpen ? "x" : "bars"}
+                style={{
+                  color: "black",
+                }}
+              />
+            }
+          >
+            {" "}
+            Menu
+          </Button>
+        )}
         <Stack alignItems={"center"} direction="row">
           <Box>
             <Image
               src={shiftkey}
               alt="Picture of the author"
-              width="90px"
-              height="70px"
+              width={matchesSmallerScreen ? "60px" : "83px"}
+              height={matchesSmallerScreen ? "55px" : "75px"}
             />
           </Box>
-          <Toolbar sx={{ pr: 0 }}>
-            {Links.map(({ name, path }) => (
-              <NavLink key={path} path={path}>
-                {name}
-              </NavLink>
-            ))}
-          </Toolbar>
+          {!matchesSmallerScreen && (
+            <Toolbar sx={{ pr: 0 }}>
+              {Links.map(({ name, path }) => (
+                <NavLink key={path} path={path}>
+                  {name}
+                </NavLink>
+              ))}
+            </Toolbar>
+          )}
         </Stack>
         <Grid
           container
@@ -108,15 +143,7 @@ export default function Navbar() {
           alignItems={"center"}
           sx={{ width: "fit-content" }}
         >
-          <Button
-            variant="contained"
-            color="secondary"
-            // size="small"
-            sx={{ mr: 2 }}
-            startIcon={"+"}
-          >
-            Action
-          </Button>
+          {!matchesSmallerScreen && actionButton}
           <AccountMenu tooltip="this is a menu">
             <MenuItem>Link 1</MenuItem>
             <MenuItem>Link 2</MenuItem>
@@ -126,17 +153,40 @@ export default function Navbar() {
         </Grid>
       </Grid>
 
-      {isOpen ? (
-        <Box pb={4} display={{ md: "none" }}>
-          <Stack component={"nav"} spacing={4}>
-            {Links.map(({ name, path }) => (
-              <NavLink key={path} path={path}>
-                {name}
-              </NavLink>
+      {menuOpen && (
+        <Drawer
+          anchor="top"
+          open={menuOpen}
+          onClose={() => setMenuOpen(false)}
+          PaperProps={{
+            sx: {
+              paddingTop: 8,
+              backgroundColor: theme.palette.background.default,
+            },
+          }}
+        >
+          <List>
+            {Links.map(({ name, path, icon }, index) => (
+              <>
+                <ListItem key={index} disablePadding>
+                  <ListItemButton
+                    component={Link}
+                    href={path}
+                    onClick={handleToggleMenuOpen}
+                  >
+                    <ListItemIcon>
+                      <FontAwesomeIcon icon={icon} />
+                    </ListItemIcon>
+                    <ListItemText primary={name} />
+                  </ListItemButton>
+                </ListItem>
+                {index !== Links.length - 1 && <Divider />}
+              </>
             ))}
-          </Stack>
-        </Box>
-      ) : null}
+          </List>
+          {actionButton}
+        </Drawer>
+      )}
     </AppBar>
   );
 }
