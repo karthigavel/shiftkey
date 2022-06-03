@@ -1,6 +1,7 @@
 import { ReactNode, useState } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 import {
   useTheme,
@@ -175,7 +176,7 @@ export default function Navbar() {
                     onClick={handleToggleMenuOpen}
                   >
                     <ListItemIcon>
-                      <FontAwesomeIcon icon={icon} />
+                      <FontAwesomeIcon icon={icon as IconProp} />
                     </ListItemIcon>
                     <ListItemText primary={name} />
                   </ListItemButton>
